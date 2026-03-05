@@ -1,0 +1,36 @@
+class Solution:
+    def minMen(self, arr):
+        n = len(arr)
+        intervals = []
+        
+        # Step 1: build intervals
+        for i in range(n):
+            if arr[i] != -1:
+                L = max(0, i - arr[i])
+                R = min(n - 1, i + arr[i])
+                intervals.append((L, R))
+        
+        # Step 2: sort by start
+        intervals.sort()
+        
+        i = 0
+        ans = 0
+        curr_end = 0
+        farthest = -1
+        
+        # Step 3: greedy cover
+        while curr_end < n:
+            while i < len(intervals) and intervals[i][0] <= curr_end:
+                farthest = max(farthest, intervals[i][1])
+                i += 1
+            
+            if farthest < curr_end:
+                return -1
+            
+            ans += 1
+            curr_end = farthest + 1
+            
+            if farthest >= n - 1:
+                return ans
+        
+        return -1
