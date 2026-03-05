@@ -1,0 +1,23 @@
+import heapq
+
+class Solution:
+    def minOperations(self, arr):
+        total = sum(arr)
+        target = total / 2
+        
+        # max heap using negatives
+        heap = [-x for x in arr]
+        heapq.heapify(heap)
+        
+        operations = 0
+        
+        while total > target:
+            largest = -heapq.heappop(heap)
+            half = largest / 2
+            
+            total -= half
+            heapq.heappush(heap, -half)
+            
+            operations += 1
+        
+        return operations
